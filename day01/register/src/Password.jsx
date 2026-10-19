@@ -32,7 +32,7 @@ const Password = (props) => {
           });
       });
     } else setCheck((prev) => (prev = { ...prev, pass: false }));
-    if (a);
+    // if (a);
   };
 
   const verifyDouble = (value) => {
