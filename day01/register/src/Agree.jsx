@@ -1,12 +1,16 @@
 import { use } from "react";
 import { useState } from "react";
+import Badge from "./atoms/Badge";
+import { data } from "./datas.js";
 
 const Agree = (props) => {
   const [agreeAll, setAgreeAll] = useState(false);
 
   const toggleAgreeData = (index) => {
+    data.isAgreed = false;
     props.set((prev) => {
       return prev.map((x, i) => {
+        if (i === 2) data.isAgreed = true;
         if (i === index) return { ...x, isAgreed: !x.isAgreed };
         return x;
       });
@@ -17,6 +21,7 @@ const Agree = (props) => {
     ) {
       setAgreeAll((prev) => (prev = true));
     } else setAgreeAll((prev) => (prev = false));
+    props.validCheck();
   };
 
   const toggleAll = () => {
@@ -35,49 +40,55 @@ const Agree = (props) => {
         });
       });
     }
+    props.validCheck();
   };
 
   return (
     <div className="text-md border border-gray-300 rounded-lg px-4 mt-2">
-      <label className="flex items-center gap-2 py-2.5" onChange={toggleAll}>
-        <input type="checkbox" checked={agreeAll} />
+      <label className="flex items-center gap-2 py-2.5">
+        <input
+          type="checkbox"
+          checked={agreeAll}
+          className="accent-gray-800 scale-130"
+          onChange={toggleAll}
+        />
         <div className="font-bold">전체 동의</div>
       </label>
       <hr className="border-gray-300" />
-      <label
-        className="flex items-center gap-2 py-2"
-        onChange={() => {
-          toggleAgreeData(0);
-        }}
-      >
-        <input type="checkbox" checked={props.agree[0].isAgreed} />
-        <div className="text-xs rounded-sm px-1.5 py-[0.1em] text-red-600 bg-red-100">
-          필수
-        </div>
+      <label className="flex items-center gap-2 py-2">
+        <input
+          type="checkbox"
+          checked={props.agree[0].isAgreed}
+          className="accent-gray-800 scale-130"
+          onChange={() => {
+            toggleAgreeData(0);
+          }}
+        />
+        <Badge isNecessary={true} />
         <div>{props.agree[0].label}</div>
       </label>
-      <label
-        className="flex items-center gap-2 py-2"
-        onChange={() => {
-          toggleAgreeData(1);
-        }}
-      >
-        <input type="checkbox" checked={props.agree[1].isAgreed} />
-        <div className="text-xs rounded-sm px-1.5 py-[0.1em] text-red-600 bg-red-100">
-          필수
-        </div>
+      <label className="flex items-center gap-2 py-2">
+        <input
+          type="checkbox"
+          checked={props.agree[1].isAgreed}
+          className="accent-gray-800 scale-130"
+          onChange={() => {
+            toggleAgreeData(1);
+          }}
+        />
+        <Badge isNecessary={true} />
         <div>{props.agree[1].label}</div>
       </label>
-      <label
-        className="flex items-center gap-2 py-2"
-        onChange={() => {
-          toggleAgreeData(2);
-        }}
-      >
-        <input type="checkbox" checked={props.agree[2].isAgreed} />
-        <div className="text-xs rounded-sm px-1.5 py-[0.1em] text-gray-600 bg-gray-100">
-          선택
-        </div>
+      <label className="flex items-center gap-2 py-2">
+        <input
+          type="checkbox"
+          checked={props.agree[2].isAgreed}
+          className="accent-gray-800 scale-130"
+          onChange={() => {
+            toggleAgreeData(2);
+          }}
+        />
+        <Badge isNecessary={false} />
         <div>{props.agree[2].label}</div>
       </label>
     </div>

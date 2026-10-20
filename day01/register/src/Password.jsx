@@ -10,43 +10,70 @@ const Password = (props) => {
 
   const verifyPassword = (value) => {
     props.set((prev) => {
-      prev = Array(prev.length)
+      return (prev = Array(prev.length)
         .fill(0)
         .map((x, i) => {
-          if (i === 0) return (x = { label: `password`, isValid: false });
-          return x;
-        });
+          if (prev[i].label == `password`)
+            return (x = { label: `password`, isValid: false });
+          return (x = prev[i]);
+        }));
     });
     if (value.length <= 0) {
-      setCheck((prev) => (prev = { ...prev, pass: true }));
+      setCheck((prev) => (prev = { ...prev, password: value, pass: true }));
       return;
     }
     if (value.length >= 8) {
-      setCheck((prev) => (prev = { ...prev, pass: true }));
+      setCheck((prev) => (prev = { ...prev, password: value, pass: true }));
       props.set((prev) => {
-        prev = Array(prev.length)
+        return (prev = Array(prev.length)
           .fill(0)
           .map((x, i) => {
-            if (i === 0) return (x = { label: `password`, isValid: true });
-            return x;
-          });
+            if (prev[i].label == `password`)
+              return (x = { label: `password`, isValid: true });
+            return (x = prev[i]);
+          }));
       });
-    } else setCheck((prev) => (prev = { ...prev, pass: false }));
-    // if (a);
+    } else
+      setCheck((prev) => (prev = { ...prev, password: value, pass: false }));
+    if (value == check.doublePassword)
+      setCheck((prev) => (prev = { ...prev, double: true }));
+    props.validCheck();
   };
 
   const verifyDouble = (value) => {
-    props.set((prev) => (prev = false));
+    props.set((prev) => {
+      return (prev = Array(prev.length)
+        .fill(0)
+        .map((x, i) => {
+          if (prev[i].label == `passwordVerify`)
+            return (x = { label: `passwordVerify`, isValid: false });
+          return (x = prev[i]);
+        }));
+    });
     if (value.length <= 0) {
-      setCheck((prev) => (prev = { ...prev, pass: true, double: true }));
+      setCheck(
+        (prev) => (prev = { ...prev, doublePassword: value, double: true }),
+      );
       return;
     }
-    if (/.+@.+[.].+/.test(value)) {
-      setCheck((prev) => (prev = { ...prev, pass: true, double: true }));
-      props.set((prev) => (prev = true));
-    } else if (/@/.test(value))
-      setCheck((prev) => (prev = { ...prev, pass: true, double: false }));
-    else setCheck((prev) => (prev = { ...prev, pass: false, double: true }));
+    if (value == check.password) {
+      setCheck(
+        (prev) => (prev = { ...prev, doublePassword: value, double: true }),
+      );
+      props.set((prev) => {
+        return (prev = Array(prev.length)
+          .fill(0)
+          .map((x, i) => {
+            if (prev[i].label == `passwordVerify`)
+              return (x = { label: `passwordVerify`, isValid: true });
+            return (x = prev[i]);
+          }));
+      });
+    } else
+      setCheck(
+        (prev) => (prev = { ...prev, doublePassword: value, double: false }),
+      );
+    props.validCheck();
   };
 
   return (

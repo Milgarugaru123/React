@@ -1,20 +1,23 @@
 import { useState } from "react";
+import { data } from "./datas.js";
 
 const Email = (props) => {
   const [check, setCheck] = useState({ atCheck: true, emailCheck: true });
 
   const verifyEmail = (value) => {
-    props.set((prev) => (prev = false));
+    data.email = value;
+    props.set((prev) => (prev = { email: value, isValid: false }));
     if (value.length <= 0) {
       setCheck((prev) => (prev = { atCheck: true, emailCheck: true }));
       return;
     }
     if (/.+@.+[.].+/.test(value)) {
       setCheck((prev) => (prev = { atCheck: true, emailCheck: true }));
-      props.set((prev) => (prev = true));
-    } else if (/@/.test(value))
+      props.set((prev) => (prev = { email: value, isValid: true }));
+    } else if (value.includes(`@`))
       setCheck((prev) => (prev = { atCheck: true, emailCheck: false }));
     else setCheck((prev) => (prev = { atCheck: false, emailCheck: true }));
+    props.validCheck();
   };
 
   return (
@@ -32,12 +35,12 @@ const Email = (props) => {
       <div
         className={`text-sm text-red-500 mt-1 ${check.atCheck ? `hidden` : ``}`}
       >
-        @가 빠졌어요.
+        이메일에 '@'가 빠졌어요.
       </div>
       <div
         className={`text-sm text-red-500 mt-1 ${check.emailCheck ? `hidden` : ``}`}
       >
-        이메일 양식을 지켜주세요.
+        이메일 양식을 지켜주세요. (~@~.~)
       </div>
     </div>
   );
