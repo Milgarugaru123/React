@@ -32,7 +32,11 @@ const App = () => {
 
   const { darkMode, font, darkToggle, nextFont } = useSetting();
 
-  const fonts = [`Inter`, `Consolas`, `Sans`];
+  const fonts = [
+    { font: `Inter`, name: `Inter` },
+    { font: `Consolas`, name: `Consolas` },
+    { font: `Comic Sans MS`, name: `Comic Sans` },
+  ];
 
   const dataFetch = () => {
     fetch("https://dummyjson.com/comments")
@@ -50,7 +54,8 @@ const App = () => {
       return (
         <div
           style={{
-            width: `400px`,
+            fontFamily: `${fonts[font].font}`,
+            width: `80%`,
             height: `max-content`,
             border: `1px solid ${darkMode ? `white` : `black`}`,
             padding: `10px`,
@@ -98,7 +103,7 @@ const App = () => {
             }}
           />
           <Button
-            name={`폰트: ${fonts[font]}`}
+            name={`폰트: ${fonts[font].name}`}
             func={() => {
               nextFont();
             }}
